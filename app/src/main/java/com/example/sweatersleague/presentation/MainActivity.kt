@@ -32,8 +32,8 @@ class MainActivity : AppCompatActivity() {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 return if (query != null) {
                     mainViewModel.getSummonerByName(query)
-                    mainViewModel.getMatchesByPuuId("y0pOcxN7AXR5SpRE1Bynea6CSjBtnylSehwRmIRPPd9pWGOuOW0HlSM-KB81jI1FYJOe5t-CGi9_EA")
-                    mainViewModel.getMatchByMatchId("RU_404450625")
+                    //mainViewModel.getMatchesByPuuId("y0pOcxN7AXR5SpRE1Bynea6CSjBtnylSehwRmIRPPd9pWGOuOW0HlSM-KB81jI1FYJOe5t-CGi9_EA")
+                    //mainViewModel.getMatchByMatchId("RU_404450625")
 
                     val bundle = Bundle()
                     bundle.putString("summoner", query)
