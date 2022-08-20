@@ -12,6 +12,7 @@ import com.example.sweatersleague.domain.useCases.GetSummonerMatchById
 import com.example.sweatersleague.domain.useCases.GetSummonerMatchesIds
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class MainViewModel: ViewModel() {
 
@@ -22,7 +23,12 @@ class MainViewModel: ViewModel() {
     private val getMatchesIdsUseCase = GetSummonerMatchesIds(repository)
     private val getMatchByMatchId = GetSummonerMatchById(repository)
 
-    private val matchesIdList: MutableList<String> = mutableListOf()
+    private val _matchesIdListLD: MutableLiveData<MutableList<String>> = MutableLiveData()
+    val matchesIdListLd: MutableLiveData<MutableList<String>>
+        get() {
+            return _matchesIdListLD
+        }
+
     private val _summoner: MutableLiveData<Summoner> = MutableLiveData()
     val summoner: MutableLiveData<Summoner>
         get() {
@@ -30,19 +36,24 @@ class MainViewModel: ViewModel() {
         }
 
     fun getSummonerByName(name: String) {
-        viewModelScope.launch(Dispatchers.IO) {
-            _summoner.value = getSummonerByNameUseCase.getSummonerByName(name)
+        viewModelScope.launch {
+            val summoner = withContext(Dispatchers.Default){
+                getSummonerByNameUseCase.getSummonerByName(name)
+            }
+            _summoner.value = summoner
         }
     }
 
     fun getMatchesByPuuId(puuId: String) {
-        viewModelScope.launch(Dispatchers.IO) {
-            matchesIdList.addAll(getMatchesIdsUseCase.getSummonerMatchesIds(puuId))
+        viewModelScope.launch {
+            withContext(Dispatchers.Default){
+                _matchesIdListLD.value?.addAll(getMatchesIdsUseCase.getSummonerMatchesIds(puuId))
+            }
         }
     }
 
     fun getMatchByMatchId(matchId: String) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             getMatchByMatchId.getSummonerMatch(matchId)
         }
     }

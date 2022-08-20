@@ -15,14 +15,9 @@ import java.lang.RuntimeException
 class RepositoryImpl: Repository {
 
     override fun getSummonerByName(name: String): Summoner? {
-        var summoner: Summoner? = Summoner("",1,1, "No id", "")
-
         val response = RetrofitObj.platformService.getSummonerByName(name).execute()
-        summoner = response.body()?.let { formSummonerFromJson(it) }
-
-        Log.d("Summoner", response.body().toString())
-
-        return summoner
+        Log.d("SummonerInfo", response.body().toString())
+        return response.body()?.let { formSummonerFromJson(it) }
     }
 
     private fun formSummonerFromJson(summonerJson: JsonObject): Summoner {
@@ -46,7 +41,6 @@ class RepositoryImpl: Repository {
         for(element in response.body()!!) {
             result.add(element.asString)
         }
-        Log.d("Matches", result.toString())
 
         return result.toList()
     }

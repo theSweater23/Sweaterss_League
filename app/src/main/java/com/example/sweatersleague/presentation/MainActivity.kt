@@ -2,6 +2,8 @@ package com.example.sweatersleague.presentation
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -23,26 +25,27 @@ class MainActivity : AppCompatActivity() {
         mainViewModel = ViewModelProvider(this)[MainViewModel::class.java]
 
         val fragment = SummonerInfoFragment()
-        setupSearchBar(fragment)
+        setupSearchBar()
+
+        mainViewModel.summoner.observe(this) {
+            val bundle = Bundle()
+
+            bundle.putString("summoner", it.name)
+            fragment.arguments = bundle
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.container, fragment)
+                .commit()
+            mainViewBinding.searchBar.isIconified = true
+            mainViewBinding.searchBar.isIconified = true
+        }
     }
 
-    private fun setupSearchBar(fragment: Fragment) {
+    private fun setupSearchBar() {
         mainViewBinding.searchBar.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
 
             override fun onQueryTextSubmit(query: String?): Boolean {
                 return if (query != null) {
                     mainViewModel.getSummonerByName(query)
-                    //mainViewModel.getMatchesByPuuId("y0pOcxN7AXR5SpRE1Bynea6CSjBtnylSehwRmIRPPd9pWGOuOW0HlSM-KB81jI1FYJOe5t-CGi9_EA")
-                    //mainViewModel.getMatchByMatchId("RU_404450625")
-
-                    val bundle = Bundle()
-                    bundle.putString("summoner", query)
-                    fragment.arguments = bundle
-                    supportFragmentManager.beginTransaction()
-                        .replace(R.id.container, fragment)
-                        .commit()
-                    mainViewBinding.searchBar.isIconified = true
-                    mainViewBinding.searchBar.isIconified = true
                     true
                 } else {
                     false

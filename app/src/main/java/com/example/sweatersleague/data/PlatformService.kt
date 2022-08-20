@@ -17,6 +17,6 @@ interface PlatformService {
     fun getSummonerMasteries(@Path("encryptedSummonerId") id: String): Call<JsonObject>
 
     companion object {
-        const val API_KEY = "RGAPI-5327ba6a-605d-4609-9511-a8204387adda"
+        const val API_KEY = "RGAPI-ea91e127-8aa4-4bb9-8334-f28a1dac6ecc"
     }
 }
