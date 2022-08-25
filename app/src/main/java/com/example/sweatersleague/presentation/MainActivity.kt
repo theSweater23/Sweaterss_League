@@ -5,7 +5,9 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
-import androidx.fragment.app.Fragment
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.lifecycle.ViewModelProvider
 import com.example.sweatersleague.R
 import com.example.sweatersleague.databinding.ActivityMainBinding
@@ -22,21 +24,29 @@ class MainActivity : AppCompatActivity() {
 
         setContentView(view)
 
+        hideSystemBars()
         mainViewModel = ViewModelProvider(this)[MainViewModel::class.java]
 
-        val fragment = SummonerInfoFragment()
         setupSearchBar()
-
+        val fragment = SummonerInfoFragment()
         mainViewModel.summoner.observe(this) {
             val bundle = Bundle()
-
-            bundle.putString("summoner", it.name)
+            if (it == null) {
+                bundle.putString(SummonerInfoFragment.SUMMONER, "null")
+            } else {
+                bundle.putString(SummonerInfoFragment.SUMMONER, it.name)
+                //mainViewModel.getMatchesByPuuId(it.puuId)
+            }
             fragment.arguments = bundle
             supportFragmentManager.beginTransaction()
                 .replace(R.id.container, fragment)
                 .commit()
             mainViewBinding.searchBar.isIconified = true
             mainViewBinding.searchBar.isIconified = true
+        }
+
+        mainViewModel.matchesIdListLd.observe(this) {
+            Log.d("Matches", "afa")
         }
     }
 
@@ -56,5 +66,15 @@ class MainActivity : AppCompatActivity() {
                 return true
             }
         })
+    }
+
+    private fun hideSystemBars() {
+        val windowInsetsController =
+            ViewCompat.getWindowInsetsController(window.decorView) ?: return
+        // Configure the behavior of the hidden system bars
+        windowInsetsController.systemBarsBehavior =
+            WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+        // Hide both the status bar and the navigation bar
+        windowInsetsController.hide(WindowInsetsCompat.Type.systemBars())
     }
 }

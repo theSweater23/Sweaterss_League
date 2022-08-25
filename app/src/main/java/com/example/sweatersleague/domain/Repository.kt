@@ -22,7 +22,7 @@ interface Repository {
     /**
      * @return list of player's matches ID's.
      */
-    fun getSummonerMatchesIds(summonerPuuId: String): List<String>
+    fun getSummonerMatchesIds(summonerPuuId: String): List<String>?
 
     /**
      * Returns a match information[LolMatch].

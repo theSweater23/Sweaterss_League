@@ -21,7 +21,10 @@ class SummonerInfoFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val name = requireArguments().getString("summoner")
-        view.findViewById<TextView>(R.id.summoner).text = name
+        val name = requireArguments().getString(SUMMONER)
+    }
+
+    companion object {
+        const val SUMMONER = "summoner"
     }
 }

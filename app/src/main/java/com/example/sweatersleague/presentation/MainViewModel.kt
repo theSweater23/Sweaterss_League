@@ -1,5 +1,6 @@
 package com.example.sweatersleague.presentation
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -37,8 +38,11 @@ class MainViewModel: ViewModel() {
 
     fun getSummonerByName(name: String) {
         viewModelScope.launch {
-            val summoner = withContext(Dispatchers.Default){
+            val summoner = withContext(Dispatchers.Default) {
                 getSummonerByNameUseCase.getSummonerByName(name)
+            }
+            if (summoner != null) {
+                getMatchesByPuuId(summoner.puuId)
             }
             _summoner.value = summoner
         }
@@ -46,9 +50,9 @@ class MainViewModel: ViewModel() {
 
     fun getMatchesByPuuId(puuId: String) {
         viewModelScope.launch {
-            withContext(Dispatchers.Default){
-                _matchesIdListLD.value?.addAll(getMatchesIdsUseCase.getSummonerMatchesIds(puuId))
-            }
+            Log.d("Matches", "Done!")
+            getMatchesIdsUseCase.getSummonerMatchesIds(puuId)
+                ?.let { _matchesIdListLD.value?.addAll(it) }
         }
     }
 

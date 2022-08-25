@@ -10,14 +10,21 @@ import com.google.gson.JsonObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import retrofit2.awaitResponse
 import java.lang.RuntimeException
 
 class RepositoryImpl: Repository {
 
     override fun getSummonerByName(name: String): Summoner? {
         val response = RetrofitObj.platformService.getSummonerByName(name).execute()
-        Log.d("SummonerInfo", response.body().toString())
-        return response.body()?.let { formSummonerFromJson(it) }
+
+        return if (response.isSuccessful) {
+            Log.d("SummonerInfo", response.body().toString())
+            response.body()?.let { formSummonerFromJson(it) }
+        } else {
+            Log.d("SummonerInfo", response.message())
+            null
+        }
     }
 
     private fun formSummonerFromJson(summonerJson: JsonObject): Summoner {
@@ -34,15 +41,15 @@ class RepositoryImpl: Repository {
         TODO("Not implemented yet!")
     }
 
-    override fun getSummonerMatchesIds(summonerPuuId: String): List<String> {
-        val result = mutableListOf<String>()
-
+    override fun getSummonerMatchesIds(summonerPuuId: String): List<String>? {
         val response = RetrofitObj.regionService.getSummonerMatches(summonerPuuId).execute()
-        for(element in response.body()!!) {
-            result.add(element.asString)
+        return if (response.isSuccessful) {
+            response.body()?.joinToString {
+                it.toString()
+            }?.split(',')
+        } else {
+            null
         }
-
-        return result.toList()
     }
 
     override fun getSummonerMatchByMatchId(matchId: String): LolMatch {
