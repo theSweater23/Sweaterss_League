@@ -1,15 +1,19 @@
 package com.example.sweatersleague.presentation
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.sweatersleague.data.RepositoryImpl
-import com.example.sweatersleague.domain.LolMatch
 import com.example.sweatersleague.domain.useCases.GetSummonerByNameUseCase
 import com.example.sweatersleague.domain.useCases.GetSummonerLeagueByIdUseCase
 import com.example.sweatersleague.domain.Repository
 import com.example.sweatersleague.domain.Summoner
 import com.example.sweatersleague.domain.useCases.GetSummonerMatchById
 import com.example.sweatersleague.domain.useCases.GetSummonerMatchesIds
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class MainViewModel: ViewModel() {
 
@@ -20,7 +24,12 @@ class MainViewModel: ViewModel() {
     private val getMatchesIdsUseCase = GetSummonerMatchesIds(repository)
     private val getMatchByMatchId = GetSummonerMatchById(repository)
 
-    private val matchesIdList: MutableList<String> = mutableListOf()
+    private val _matchesIdListLD: MutableLiveData<MutableList<String>> = MutableLiveData()
+    val matchesIdListLd: MutableLiveData<MutableList<String>>
+        get() {
+            return _matchesIdListLD
+        }
+
     private val _summoner: MutableLiveData<Summoner> = MutableLiveData()
     val summoner: MutableLiveData<Summoner>
         get() {
@@ -28,14 +37,28 @@ class MainViewModel: ViewModel() {
         }
 
     fun getSummonerByName(name: String) {
-        _summoner.value = getSummonerByNameUseCase.getSummonerByName(name)
+        viewModelScope.launch {
+            val summoner = withContext(Dispatchers.Default) {
+                getSummonerByNameUseCase.getSummonerByName(name)
+            }
+            if (summoner != null) {
+                getMatchesByPuuId(summoner.puuId)
+            }
+            _summoner.value = summoner
+        }
     }
 
     fun getMatchesByPuuId(puuId: String) {
-        matchesIdList.addAll(getMatchesIdsUseCase.getSummonerMatchesIds(puuId))
+        viewModelScope.launch {
+            Log.d("Matches", "Done!")
+            getMatchesIdsUseCase.getSummonerMatchesIds(puuId)
+                ?.let { _matchesIdListLD.value?.addAll(it) }
+        }
     }
 
     fun getMatchByMatchId(matchId: String) {
-        getMatchByMatchId.getSummonerMatch(matchId)
+        viewModelScope.launch {
+            getMatchByMatchId.getSummonerMatch(matchId)
+        }
     }
 }

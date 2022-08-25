@@ -2,8 +2,12 @@ package com.example.sweatersleague.presentation
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.widget.SearchView
-import androidx.fragment.app.Fragment
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.lifecycle.ViewModelProvider
 import com.example.sweatersleague.R
 import com.example.sweatersleague.databinding.ActivityMainBinding
@@ -20,29 +24,38 @@ class MainActivity : AppCompatActivity() {
 
         setContentView(view)
 
+        hideSystemBars()
         mainViewModel = ViewModelProvider(this)[MainViewModel::class.java]
 
+        setupSearchBar()
         val fragment = SummonerInfoFragment()
-        setupSearchBar(fragment)
+        mainViewModel.summoner.observe(this) {
+            val bundle = Bundle()
+            if (it == null) {
+                bundle.putString(SummonerInfoFragment.SUMMONER, "null")
+            } else {
+                bundle.putString(SummonerInfoFragment.SUMMONER, it.name)
+                //mainViewModel.getMatchesByPuuId(it.puuId)
+            }
+            fragment.arguments = bundle
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.container, fragment)
+                .commit()
+            mainViewBinding.searchBar.isIconified = true
+            mainViewBinding.searchBar.isIconified = true
+        }
+
+        mainViewModel.matchesIdListLd.observe(this) {
+            Log.d("Matches", "afa")
+        }
     }
 
-    private fun setupSearchBar(fragment: Fragment) {
+    private fun setupSearchBar() {
         mainViewBinding.searchBar.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
 
             override fun onQueryTextSubmit(query: String?): Boolean {
                 return if (query != null) {
                     mainViewModel.getSummonerByName(query)
-                    mainViewModel.getMatchesByPuuId("y0pOcxN7AXR5SpRE1Bynea6CSjBtnylSehwRmIRPPd9pWGOuOW0HlSM-KB81jI1FYJOe5t-CGi9_EA")
-                    mainViewModel.getMatchByMatchId("RU_404450625")
-
-                    val bundle = Bundle()
-                    bundle.putString("summoner", query)
-                    fragment.arguments = bundle
-                    supportFragmentManager.beginTransaction()
-                        .replace(R.id.container, fragment)
-                        .commit()
-                    mainViewBinding.searchBar.isIconified = true
-                    mainViewBinding.searchBar.isIconified = true
                     true
                 } else {
                     false
@@ -53,5 +66,15 @@ class MainActivity : AppCompatActivity() {
                 return true
             }
         })
+    }
+
+    private fun hideSystemBars() {
+        val windowInsetsController =
+            ViewCompat.getWindowInsetsController(window.decorView) ?: return
+        // Configure the behavior of the hidden system bars
+        windowInsetsController.systemBarsBehavior =
+            WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+        // Hide both the status bar and the navigation bar
+        windowInsetsController.hide(WindowInsetsCompat.Type.systemBars())
     }
 }

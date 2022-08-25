@@ -1,4 +1,10 @@
-package com.example.sweatersleague.domain
+package com.example.sweatersleague.domain.lolMatch.participant
+
+import com.example.sweatersleague.domain.lolMatch.participant.perks.Perks
+
+/**
+ * A match participant(player).
+ */
 
 data class Participant(
     val assists: Int,
@@ -19,5 +25,6 @@ data class Participant(
     val profileIcon: Int,
     val role: String,
     val summonerLevel: Int,
-    val summonerName: String
+    val summonerName: String,
+    val perks: Perks
 )

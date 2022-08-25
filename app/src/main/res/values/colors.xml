@@ -1,5 +1,7 @@
 
 <resources>
+    <color name="rv_background">#404040</color>
+
     <color name="seed">#2c42a3</color>
     <color name="md_theme_light_primary">#4156B7</color>
     <color name="md_theme_light_onPrimary">#FFFFFF</color>
