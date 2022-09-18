@@ -11,11 +11,12 @@ import androidx.core.view.WindowInsetsControllerCompat
 import androidx.lifecycle.ViewModelProvider
 import com.example.sweatersleague.R
 import com.example.sweatersleague.databinding.ActivityMainBinding
+import com.example.sweatersleague.domain.Summoner
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var mainViewBinding: ActivityMainBinding
-    lateinit var mainViewModel: MainViewModel
+    private lateinit var mainViewModel: MainViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,25 +29,15 @@ class MainActivity : AppCompatActivity() {
         mainViewModel = ViewModelProvider(this)[MainViewModel::class.java]
 
         setupSearchBar()
-        val fragment = SummonerInfoFragment()
-        mainViewModel.summoner.observe(this) {
-            val bundle = Bundle()
-            if (it == null) {
-                bundle.putString(SummonerInfoFragment.SUMMONER, "null")
-            } else {
-                bundle.putString(SummonerInfoFragment.SUMMONER, it.name)
-                //mainViewModel.getMatchesByPuuId(it.puuId)
-            }
-            fragment.arguments = bundle
+
+        MainViewModel.matches.observe(this) {
+            val fragment = setupFragment(mainViewModel.summoner.value)
+
             supportFragmentManager.beginTransaction()
                 .replace(R.id.container, fragment)
                 .commit()
             mainViewBinding.searchBar.isIconified = true
             mainViewBinding.searchBar.isIconified = true
-        }
-
-        mainViewModel.matchesIdListLd.observe(this) {
-            Log.d("Matches", "afa")
         }
     }
 
@@ -76,5 +67,13 @@ class MainActivity : AppCompatActivity() {
             WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
         // Hide both the status bar and the navigation bar
         windowInsetsController.hide(WindowInsetsCompat.Type.systemBars())
+    }
+
+    private fun setupFragment(summoner: Summoner?): SummonerInfoFragment {
+        val name = summoner?.name ?: "Not Found"
+        val lvl = summoner?.summonerLevel ?: 0
+        val iconId = summoner?.profileIconId ?: 0
+
+        return SummonerInfoFragment.newInstance(name, lvl, iconId)
     }
 }

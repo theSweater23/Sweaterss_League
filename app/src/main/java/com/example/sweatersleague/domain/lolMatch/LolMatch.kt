@@ -14,53 +14,11 @@ import com.example.sweatersleague.domain.lolMatch.teamInfo.TeamInfo
  *
  * @property gameDuration Duration of game.
  * @property participants List of players who participated in the match.
- * @property teamInfo Information about teams results.
+ * @property teamsInfo Information about teams results.
  */
 
 data class LolMatch(
     val gameDuration: Long,
     val participants: List<Participant>,
-    val teamInfo: TeamInfo
-){
-    companion object {
-        val LolMatchTest: LolMatch = LolMatch(
-            60,
-            listOf(
-                Participant(
-                0,
-                0,
-                "",
-                0,
-                false,
-                1000,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-            "",
-            0,
-            "",
-            0,
-            "",
-            perks = Perks(
-                Stats(10,10,10),
-                Styles(
-                    listOf(Style(1,1,1,1))
-                )
-            )
-            )
-            ),
-            TeamInfo(true, Objectives(
-                Objective(false, 0),
-                Objective(false, 0),
-                Objective(false, 0),
-                Objective(false, 0)
-            )
-            )
-        )
-    }
-}
+    val teamsInfo: List<TeamInfo>
+)

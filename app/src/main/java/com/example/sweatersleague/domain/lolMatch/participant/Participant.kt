@@ -10,6 +10,7 @@ data class Participant(
     val assists: Int,
     val champLevel: Int,
     val championName: String,
+    val championId: Int,
     val deaths: Int,
     val firstBloodKill: Boolean,
     val goldEarned: Int,

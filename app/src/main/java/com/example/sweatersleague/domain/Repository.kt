@@ -29,5 +29,5 @@ interface Repository {
      *
      * @return match by match ID.
      */
-    fun getSummonerMatchByMatchId(matchId: String): LolMatch
+    suspend fun getSummonerMatchesByMatchIds(matchIds: List<String>): List<LolMatch>
 }

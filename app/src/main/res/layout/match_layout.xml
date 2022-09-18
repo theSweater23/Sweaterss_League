@@ -3,15 +3,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginTop="4dp"
+    android:layout_marginBottom="4dp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/match_info_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="16dp"
         android:backgroundTint="@color/rv_background"
-        app:cardCornerRadius="16dp">
+        app:cardCornerRadius="6dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/match_info_CL"
@@ -20,8 +21,8 @@
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/champion_icon"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:layout_margin="16dp"
                 android:src="@drawable/aatrox"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -32,33 +33,34 @@
                 android:id="@+id/KDA"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="16dp"
+                android:layout_marginTop="16dp"
                 android:text="10/10/10"
                 android:textColor="@android:color/white"
-                android:textSize="28sp"
+                android:textSize="24sp"
                 app:layout_constraintEnd_toStartOf="@+id/linearLayout"
                 app:layout_constraintStart_toEndOf="@+id/champion_icon"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/coin_icon"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginBottom="16dp"
                 android:src="@drawable/coin"
-                android:layout_margin="16dp"
-                app:layout_constraintStart_toEndOf="@+id/champion_icon"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/KDA"
                 app:layout_constraintTop_toBottomOf="@+id/KDA" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/gold_earned"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="18dp"
+                android:layout_marginBottom="18dp"
                 android:text="10.0k"
                 android:textColor="@android:color/white"
-                android:textSize="24sp"
-                app:layout_constraintEnd_toStartOf="@+id/linearLayout"
-                app:layout_constraintStart_toEndOf="@+id/coin_icon"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/KDA"
                 app:layout_constraintTop_toBottomOf="@+id/KDA" />
 
             <LinearLayout
@@ -66,6 +68,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
@@ -81,51 +84,51 @@
 
                     <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/item0"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
                         android:layout_margin="1dp"
                         android:src="@drawable/item_1004" />
 
                     <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/item1"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
                         android:layout_margin="1dp"
                         android:src="@drawable/item_1001" />
 
                     <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/item2"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
                         android:layout_margin="1dp"
                         android:src="@drawable/item_1006" />
 
                     <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/item3"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
                         android:layout_margin="1dp"
                         android:src="@drawable/item_1011" />
 
                     <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/item4"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
                         android:layout_margin="1dp"
                         android:src="@drawable/item_1018" />
 
                     <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/item5"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
                         android:layout_margin="1dp"
                         android:src="@drawable/item_1027" />
                 </GridLayout>
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/item_accessory"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
                     android:layout_gravity="center"
                     android:layout_margin="1dp"
                     android:src="@drawable/item_1026"
